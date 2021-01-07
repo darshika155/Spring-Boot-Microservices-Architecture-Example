@@ -1,0 +1,20 @@
+zuul:
+  strip-prefix: true
+  routes:
+    user-service:
+      path: /users/**
+      serviceId: USER-SERVICE
+      strip-prefix: true
+    department-service:
+      path: /departments/**
+      serviceId: DEPARTMENT-SERVICE
+      strip-prefix: true
+      
+  host:
+    connect-timeout-millis: 10000000
+    socket-timeout-millis: 100000000
+    connection-request-timeout-millis: 1000000
+    max-per-route-connections: 1000
+    time-to-live: 100000
+    
+  

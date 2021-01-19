@@ -1,0 +1,23 @@
+<!DOCTYPE> 
+<html xmlns:th="https://thymeleaf.org" lang="en">    
+<head>    
+<title>Index Page</title>    
+</head>    
+<body>
+
+<form action="#" th:action="@{/departments/department}" th:object="${department}" method="post" enctype="multipart/form-data">
+    <label for="departmentName">Department Name</label>
+    <input type="text" th:field="*{departmentName}" id="departmentName" placeholder="Department Name">
+    <span th:if="${#fields.hasErrors('departmentName')}" th:errors="*{departmentName}"></span>
+    <br>
+    <br>
+    <label for="departmentCode">Department Code</label>
+    <input type="text" th:field="*{departmentCode}" id="departmentCode" placeholder="Department Code">
+    <span th:if="${#fields.hasErrors('departmentCode')}" th:errors="*{departmentCode}"></span>
+    <br>
+    <br>
+    <input type="submit" value="Add Department">   
+</form>
+
+</body>
+</html>

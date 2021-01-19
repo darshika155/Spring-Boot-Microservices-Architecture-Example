@@ -36,4 +36,10 @@ public class DepartmentService {
 		// TODO Auto-generated method stub
 		return (List<Department>) departmentRepository.findAll();
 	}
+
+	public void delete(Department department1) {
+		// TODO Auto-generated method stub
+		departmentRepository.delete(department1);
+		
+	}
 }

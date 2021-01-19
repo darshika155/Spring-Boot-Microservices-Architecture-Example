@@ -1,17 +1,26 @@
 package com.example.posts.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,13 +65,21 @@ public class DepartmentController {
 		return departmentService.saveDepartment(department);
 	}
 	
+	@GetMapping("/index")    
+	public ModelAndView index(@ModelAttribute("department") Department department)  
+	{    
+		ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.setViewName("index");
+	    return modelAndView;  
+	}   
+	
 //	@GetMapping("/index")    
-//	public ModelAndView index(@ModelAttribute("department") Department department)  
+//	public String index(Model model)  
 //	{    
-//		ModelAndView modelAndView = new ModelAndView();
-//	    modelAndView.setViewName("index");
-//	    return modelAndView;  
-//	}    
+//		Department department = new Department();
+//		model.addAttribute("department",department);
+//		return "index";
+//	}   
 	
 	@GetMapping("/")
 	public List<Department> getAllDepartments() {
@@ -74,6 +91,24 @@ public class DepartmentController {
 	public Department findDepartmentById(@PathVariable("departmentId") Integer departmentId) {
 		log.info("Inside find department by id method of Department Controller" + request.getServerPort());
 		return departmentService.findDepartmentBydepartmentId(departmentId);
+	}
+	
+	@PutMapping("/{departmentId}")
+	public ResponseEntity<Department> updateDepartment(@PathVariable Integer departmentId,@RequestBody Department department){
+		Department department1  = departmentService.findDepartmentBydepartmentId(departmentId);
+		department1.setDepartmentName(department.getDepartmentName());
+		department1.setDepartmentCode(department.getDepartmentCode());
+		Department updateDepartment = departmentService.saveDepartment(department1);
+		return ResponseEntity.ok(updateDepartment);
+	}
+	
+	@DeleteMapping("/{departmentId}")
+	public ResponseEntity<Map<String,Boolean>> deleteDepartment(@PathVariable Integer departmentId){
+		Department department1  = departmentService.findDepartmentBydepartmentId(departmentId);
+		departmentService.delete(department1);
+		Map<String,Boolean> response = new HashMap<>();
+		response.put("deleted",Boolean.TRUE);
+		return ResponseEntity.ok(response);
 	}
 
 }
